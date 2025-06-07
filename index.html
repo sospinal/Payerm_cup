@@ -6,475 +6,264 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Soccer Tournament Manager</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      padding: 20px;
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f5f5f5;
     }
 
     .container {
-      max-width: 1400px;
+      max-width: 1200px;
       margin: 0 auto;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(10px);
-      overflow: hidden;
-    }
-
-    .header {
-      background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-      color: white;
-      padding: 30px;
-      text-align: center;
-      position: relative;
-    }
-
-    .header::before {
-      content: '⚽';
-      position: absolute;
-      left: 30px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 2em;
-      animation: bounce 2s infinite;
-    }
-
-    @keyframes bounce {
-
-      0%,
-      20%,
-      50%,
-      80%,
-      100% {
-        transform: translateY(-50%);
-      }
-
-      40% {
-        transform: translateY(-60%);
-      }
-
-      60% {
-        transform: translateY(-55%);
-      }
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
     h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    }
-
-    .subtitle {
-      font-size: 1.2em;
-      opacity: 0.9;
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
     }
 
     .tabs {
       display: flex;
-      background: #f8f9fa;
-      border-bottom: 3px solid #e9ecef;
+      border-bottom: 2px solid #ddd;
+      margin-bottom: 20px;
     }
 
     .tab-button {
-      flex: 1;
-      padding: 20px;
+      padding: 15px 20px;
       background: none;
       border: none;
-      font-size: 1.1em;
-      font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
-      color: #6c757d;
-      position: relative;
-    }
-
-    .tab-button:hover {
-      background: rgba(102, 126, 234, 0.1);
+      font-size: 16px;
+      color: #666;
     }
 
     .tab-button.active {
-      color: #667eea;
-      background: white;
-    }
-
-    .tab-button.active::after {
-      content: '';
-      position: absolute;
-      bottom: -3px;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, #667eea, #764ba2);
+      color: #333;
+      border-bottom: 2px solid #007bff;
     }
 
     .tab-content {
       display: none;
-      padding: 30px;
-      min-height: 600px;
     }
 
     .tab-content.active {
       display: block;
     }
 
-    .table-container {
-      overflow-x: auto;
-      border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-      margin-bottom: 30px;
-    }
-
     table {
       width: 100%;
       border-collapse: collapse;
-      background: white;
+      margin-bottom: 20px;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ddd;
     }
 
     th {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 15px 10px;
-      text-align: center;
-      font-weight: 600;
-      font-size: 0.95em;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    td {
-      padding: 12px 10px;
-      text-align: center;
-      border-bottom: 1px solid #e9ecef;
-      transition: background-color 0.2s ease;
-    }
-
-    tr:hover td {
-      background-color: rgba(102, 126, 234, 0.05);
-    }
-
-    .team-name {
-      font-weight: 600;
-      color: #2c3e50;
+      background-color: #f8f9fa;
+      font-weight: bold;
     }
 
     .match-result {
       width: 50px;
-      border: 2px solid #e9ecef;
-      border-radius: 6px;
-      padding: 8px;
+      padding: 5px;
       text-align: center;
-      font-weight: 600;
-      transition: border-color 0.3s ease;
+      border: 1px solid #ddd;
+      border-radius: 4px;
     }
 
-    .match-result:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-
-    .standings-table td:first-child {
-      text-align: left;
-      font-weight: 600;
-      color: #2c3e50;
-    }
-
-    .position {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      margin-right: 10px;
-    }
-
-    .gold {
-      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-      color: #2c3e50;
-    }
-
-    .silver {
-      background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
-      color: #2c3e50;
-    }
-
-    .bronze {
-      background: linear-gradient(135deg, #cd7f32 0%, #daa520 100%);
-      color: white;
-    }
-
-    .schedule-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    .round-card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      border-left: 4px solid #667eea;
-    }
-
-    .round-title {
-      font-size: 1.3em;
-      font-weight: 700;
-      color: #2c3e50;
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-    }
-
-    .round-title::before {
-      content: '📅';
-      margin-right: 10px;
-    }
-
-    .match {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid #f8f9fa;
-    }
-
-    .match:last-child {
-      border-bottom: none;
-    }
-
-    .vs {
-      font-weight: bold;
-      color: #667eea;
-      margin: 0 10px;
-    }
-
-    .export-button {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    .btn {
+      background-color: #007bff;
       color: white;
       border: none;
-      padding: 12px 25px;
-      border-radius: 8px;
-      font-size: 1em;
-      font-weight: 600;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 4px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      margin: 10px 5px;
     }
 
-    .export-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    .btn:hover {
+      background-color: #0056b3;
     }
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
+    .file-input {
+      margin: 10px 0;
     }
 
-    .stat-card {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
+    .team-name {
+      font-weight: bold;
+      text-align: left;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+
+    .stat-item {
       text-align: center;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      border-top: 4px solid #667eea;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 4px;
     }
 
     .stat-number {
-      font-size: 2.5em;
-      font-weight: 700;
-      color: #667eea;
-      margin-bottom: 10px;
-    }
-
-    .stat-label {
-      color: #6c757d;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #007bff;
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <div class="header">
-      <h1>Soccer Tournament Manager</h1>
-      <div class="subtitle">Complete Home & Away League - 7 Teams</div>
-    </div>
+    <h1>Soccer Tournament Manager</h1>
+    <p style="text-align: center; color: #666; margin-bottom: 20px;">Complete Home & Away League - 8 Teams</p>
 
     <div class="tabs">
       <button class="tab-button active" onclick="showTab('fixtures')">Fixtures</button>
       <button class="tab-button" onclick="showTab('results')">Results</button>
       <button class="tab-button" onclick="showTab('standings')">Standings</button>
-      <button class="tab-button" onclick="showTab('schedule')">Match Schedule</button>
+      <button class="tab-button" onclick="showTab('schedule')">Schedule</button>
     </div>
 
     <div id="fixtures" class="tab-content active">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-number">42</div>
-          <div class="stat-label">Total Matches</div>
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-number">56</div>
+          <div>Total Matches</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-number">12</div>
-          <div class="stat-label">Matches per Team</div>
+        <div class="stat-item">
+          <div class="stat-number">14</div>
+          <div>Matches per Team</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-number">12</div>
-          <div class="stat-label">Total Rounds</div>
+        <div class="stat-item">
+          <div class="stat-number">14</div>
+          <div>Total Rounds</div>
         </div>
       </div>
 
-      <div class="table-container">
-        <table id="fixturesTable">
-          <thead>
-            <tr>
-              <th>Home Team</th>
-              <th>Santiago Duque</th>
-              <th>Darío Hernández</th>
-              <th>Steven Perez</th>
-              <th>Andrés Monsalve</th>
-              <th>Andrés Celis</th>
-              <th>Huber Ospina</th>
-              <th>Santiago Ospina</th>
-            </tr>
-          </thead>
-          <tbody id="fixturesBody">
-          </tbody>
-        </table>
-      </div>
+      <table id="fixturesTable">
+        <thead>
+          <tr>
+            <th>Home Team</th>
+            <th>Santiago Duque</th>
+            <th>Darío Hernández</th>
+            <th>Steven Perez</th>
+            <th>Andrés Monsalve</th>
+            <th>Andrés Celis</th>
+            <th>Huber Ospina</th>
+            <th>Santiago Ospina</th>
+            <th>Juan David Osorio</th>
+          </tr>
+        </thead>
+        <tbody id="fixturesBody">
+        </tbody>
+      </table>
 
-      <button class="export-button" onclick="exportToCSV('fixtures')">📊 Export Fixtures</button>
+      <button class="btn" onclick="exportToCSV('fixtures')">Export Fixtures</button>
     </div>
 
     <div id="results" class="tab-content">
-      <h2 style="color: #2c3e50; margin-bottom: 20px;">Enter Match Results</h2>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Round</th>
-              <th>Home Team</th>
-              <th>Home Score</th>
-              <th>Away Score</th>
-              <th>Away Team</th>
-            </tr>
-          </thead>
-          <tbody id="resultsBody">
-          </tbody>
-        </table>
+      <div class="file-input">
+        <label for="csvFile">Import Results from CSV:</label>
+        <input type="file" id="csvFile" accept=".csv" onchange="importCSV(event)">
+        <button class="btn" onclick="document.getElementById('csvFile').click()">Choose File</button>
       </div>
 
-      <button class="export-button" onclick="calculateStandings()">📊 Update Standings</button>
-      <button class="export-button" onclick="exportToCSV('results')">📄 Export Results</button>
+      <table>
+        <thead>
+          <tr>
+            <th>Round</th>
+            <th>Home Team</th>
+            <th>Home Score</th>
+            <th>Away Score</th>
+            <th>Away Team</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody">
+        </tbody>
+      </table>
+
+      <button class="btn" onclick="calculateStandings()">Update Standings</button>
+      <button class="btn" onclick="exportToCSV('results')">Export Results</button>
     </div>
 
     <div id="standings" class="tab-content">
-      <div class="table-container">
-        <table class="standings-table">
-          <thead>
-            <tr>
-              <th>Pos</th>
-              <th>Team</th>
-              <th>Played</th>
-              <th>Won</th>
-              <th>Drawn</th>
-              <th>Lost</th>
-              <th>Goals For</th>
-              <th>Goals Against</th>
-              <th>Goal Diff</th>
-              <th>Points</th>
-            </tr>
-          </thead>
-          <tbody id="standingsBody">
-          </tbody>
-        </table>
-      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Pos</th>
+            <th>Team</th>
+            <th>Played</th>
+            <th>Won</th>
+            <th>Drawn</th>
+            <th>Lost</th>
+            <th>Goals For</th>
+            <th>Goals Against</th>
+            <th>Goal Diff</th>
+            <th>Points</th>
+          </tr>
+        </thead>
+        <tbody id="standingsBody">
+        </tbody>
+      </table>
 
-      <button class="export-button" onclick="exportToCSV('standings')">📊 Export Standings</button>
+      <button class="btn" onclick="exportToCSV('standings')">Export Standings</button>
     </div>
 
     <div id="schedule" class="tab-content">
-      <div class="schedule-grid" id="scheduleGrid">
+      <div id="scheduleGrid">
       </div>
     </div>
   </div>
 
   <script>
-    const teams = ['Santiago Duque', 'Darío Hernández', 'Steven Perez', 'Andrés Monsalve', 'Andrés Celis', 'Huber Ospina', 'Santiago Ospina'];
+    const teams = ['Santiago Duque', 'Darío Hernández', 'Steven Perez', 'Andrés Monsalve', 'Andrés Celis', 'Huber Ospina', 'Santiago Ospina', 'Juan David Osorio'];
     let fixtures = [];
-    let results = [];
     let standings = {};
 
-    // Initialize standings
     function initializeStandings() {
       teams.forEach(team => {
         standings[team] = {
-          played: 0,
-          won: 0,
-          drawn: 0,
-          lost: 0,
-          goalsFor: 0,
-          goalsAgainst: 0,
-          goalDiff: 0,
-          points: 0
+          played: 0, won: 0, drawn: 0, lost: 0,
+          goalsFor: 0, goalsAgainst: 0, goalDiff: 0, points: 0
         };
       });
     }
 
-    // Generate round-robin fixtures
     function generateFixtures() {
       fixtures = [];
       let matchId = 1;
 
-      // Home and away matches
       for (let round = 0; round < 2; round++) {
         for (let i = 0; i < teams.length; i++) {
           for (let j = 0; j < teams.length; j++) {
             if (i !== j) {
-              if (round === 0) {
-                fixtures.push({
-                  id: matchId++,
-                  round: Math.floor((fixtures.length) / 5) + 1,
-                  home: teams[i],
-                  away: teams[j],
-                  homeScore: null,
-                  awayScore: null
-                });
-              } else {
-                // Second round (reverse fixtures)
-                fixtures.push({
-                  id: matchId++,
-                  round: Math.floor((fixtures.length) / 5) + 1,
-                  home: teams[j],
-                  away: teams[i],
-                  homeScore: null,
-                  awayScore: null
-                });
-              }
+              fixtures.push({
+                id: matchId++,
+                round: Math.floor((fixtures.length) / 5) + 1,
+                home: round === 0 ? teams[i] : teams[j],
+                away: round === 0 ? teams[j] : teams[i],
+                homeScore: null,
+                awayScore: null
+              });
             }
           }
         }
       }
     }
 
-    // Display fixtures matrix
     function displayFixtures() {
       const tbody = document.getElementById('fixturesBody');
       tbody.innerHTML = '';
@@ -487,24 +276,18 @@
           if (homeTeam === awayTeam) {
             row.innerHTML += '<td style="background-color: #f8f9fa;">-</td>';
           } else {
-            // Find both home and away fixtures
             const homeFixture = fixtures.find(f => f.home === homeTeam && f.away === awayTeam);
             const awayFixture = fixtures.find(f => f.home === awayTeam && f.away === homeTeam);
 
             let cellContent = '';
-            if (homeFixture && homeFixture.homeScore !== null) {
-              cellContent += `H: ${homeFixture.homeScore}-${homeFixture.awayScore}<br>`;
-            } else {
-              cellContent += 'H: -<br>';
-            }
+            cellContent += homeFixture && homeFixture.homeScore !== null
+              ? `H: ${homeFixture.homeScore}-${homeFixture.awayScore}<br>`
+              : 'H: -<br>';
+            cellContent += awayFixture && awayFixture.homeScore !== null
+              ? `A: ${awayFixture.awayScore}-${awayFixture.homeScore}`
+              : 'A: -';
 
-            if (awayFixture && awayFixture.homeScore !== null) {
-              cellContent += `A: ${awayFixture.awayScore}-${awayFixture.homeScore}`;
-            } else {
-              cellContent += 'A: -';
-            }
-
-            row.innerHTML += `<td style="font-size: 0.85em;">${cellContent}</td>`;
+            row.innerHTML += `<td style="font-size: 12px;">${cellContent}</td>`;
           }
         });
 
@@ -512,7 +295,6 @@
       });
     }
 
-    // Display results input
     function displayResults() {
       const tbody = document.getElementById('resultsBody');
       tbody.innerHTML = '';
@@ -534,7 +316,6 @@
       });
     }
 
-    // Update result
     function updateResult(fixtureIndex, type, value) {
       if (type === 'home') {
         fixtures[fixtureIndex].homeScore = value ? parseInt(value) : null;
@@ -544,7 +325,6 @@
       displayFixtures();
     }
 
-    // Calculate standings
     function calculateStandings() {
       initializeStandings();
 
@@ -555,17 +335,14 @@
           const homeScore = fixture.homeScore;
           const awayScore = fixture.awayScore;
 
-          // Update played games
           standings[homeTeam].played++;
           standings[awayTeam].played++;
 
-          // Update goals
           standings[homeTeam].goalsFor += homeScore;
           standings[homeTeam].goalsAgainst += awayScore;
           standings[awayTeam].goalsFor += awayScore;
           standings[awayTeam].goalsAgainst += homeScore;
 
-          // Determine result
           if (homeScore > awayScore) {
             standings[homeTeam].won++;
             standings[homeTeam].points += 3;
@@ -583,7 +360,6 @@
         }
       });
 
-      // Calculate goal difference
       Object.keys(standings).forEach(team => {
         standings[team].goalDiff = standings[team].goalsFor - standings[team].goalsAgainst;
       });
@@ -591,12 +367,10 @@
       displayStandings();
     }
 
-    // Display standings
     function displayStandings() {
       const tbody = document.getElementById('standingsBody');
       tbody.innerHTML = '';
 
-      // Sort teams by points, then goal difference, then goals for
       const sortedTeams = Object.keys(standings).sort((a, b) => {
         if (standings[b].points !== standings[a].points) {
           return standings[b].points - standings[a].points;
@@ -611,13 +385,8 @@
         const stats = standings[team];
         const row = document.createElement('tr');
 
-        let positionClass = '';
-        if (index === 0) positionClass = 'gold';
-        else if (index === 1) positionClass = 'silver';
-        else if (index === 2) positionClass = 'bronze';
-
         row.innerHTML = `
-                    <td><span class="position ${positionClass}">${index + 1}</span></td>
+                    <td>${index + 1}</td>
                     <td class="team-name">${team}</td>
                     <td>${stats.played}</td>
                     <td>${stats.won}</td>
@@ -625,21 +394,19 @@
                     <td>${stats.lost}</td>
                     <td>${stats.goalsFor}</td>
                     <td>${stats.goalsAgainst}</td>
-                    <td style="color: ${stats.goalDiff >= 0 ? '#28a745' : '#dc3545'}; font-weight: 600;">
+                    <td style="color: ${stats.goalDiff >= 0 ? 'green' : 'red'};">
                         ${stats.goalDiff >= 0 ? '+' : ''}${stats.goalDiff}
                     </td>
-                    <td style="font-weight: 700; color: #667eea;">${stats.points}</td>
+                    <td style="font-weight: bold;">${stats.points}</td>
                 `;
         tbody.appendChild(row);
       });
     }
 
-    // Display schedule
     function displaySchedule() {
       const grid = document.getElementById('scheduleGrid');
       grid.innerHTML = '';
 
-      // Group fixtures by round
       const rounds = {};
       fixtures.forEach(fixture => {
         if (!rounds[fixture.round]) {
@@ -649,36 +416,28 @@
       });
 
       Object.keys(rounds).forEach(round => {
-        const card = document.createElement('div');
-        card.className = 'round-card';
+        const div = document.createElement('div');
+        div.style.cssText = 'margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 4px;';
 
-        let matchesHtml = '';
+        let matchesHtml = `<h3>Round ${round}</h3>`;
         rounds[round].forEach(fixture => {
           const resultText = (fixture.homeScore !== null && fixture.awayScore !== null)
             ? `${fixture.homeScore} - ${fixture.awayScore}`
             : 'vs';
 
           matchesHtml += `
-                        <div class="match">
-                            <span>${fixture.home}</span>
-                            <span class="vs">${resultText}</span>
-                            <span>${fixture.away}</span>
+                        <div style="margin: 10px 0; padding: 8px; background-color: #f8f9fa; border-radius: 4px;">
+                            ${fixture.home} <strong>${resultText}</strong> ${fixture.away}
                         </div>
                     `;
         });
 
-        card.innerHTML = `
-                    <div class="round-title">Round ${round}</div>
-                    ${matchesHtml}
-                `;
-
-        grid.appendChild(card);
+        div.innerHTML = matchesHtml;
+        grid.appendChild(div);
       });
     }
 
-    // Tab switching
     function showTab(tabName) {
-      // Hide all tabs
       document.querySelectorAll('.tab-content').forEach(tab => {
         tab.classList.remove('active');
       });
@@ -686,11 +445,9 @@
         button.classList.remove('active');
       });
 
-      // Show selected tab
       document.getElementById(tabName).classList.add('active');
       event.target.classList.add('active');
 
-      // Refresh content if needed
       if (tabName === 'standings') {
         calculateStandings();
       } else if (tabName === 'schedule') {
@@ -698,7 +455,6 @@
       }
     }
 
-    // Export to CSV
     function exportToCSV(type) {
       let csvContent = '';
       let filename = '';
@@ -741,6 +497,59 @@
       a.download = filename;
       a.click();
       window.URL.revokeObjectURL(url);
+    }
+
+    function importCSV(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const csv = e.target.result;
+        const lines = csv.split('\n');
+        const headers = lines[0].split(',').map(h => h.trim());
+
+        // Check if this is a fixtures/results CSV
+        if (headers.includes('Home Team') && headers.includes('Away Team')) {
+          // Clear existing results
+          fixtures.forEach(fixture => {
+            fixture.homeScore = null;
+            fixture.awayScore = null;
+          });
+
+          // Import data
+          for (let i = 1; i < lines.length; i++) {
+            if (lines[i].trim() === '') continue;
+
+            const values = lines[i].split(',').map(v => v.trim());
+            const homeTeam = values[headers.indexOf('Home Team')];
+            const awayTeam = values[headers.indexOf('Away Team')];
+            const homeScore = values[headers.indexOf('Home Score')];
+            const awayScore = values[headers.indexOf('Away Score')];
+
+            // Find matching fixture
+            const fixture = fixtures.find(f =>
+              f.home === homeTeam && f.away === awayTeam
+            );
+
+            if (fixture && homeScore !== '' && awayScore !== '') {
+              fixture.homeScore = parseInt(homeScore);
+              fixture.awayScore = parseInt(awayScore);
+            }
+          }
+
+          // Refresh displays
+          displayFixtures();
+          displayResults();
+          calculateStandings();
+
+          alert('CSV imported successfully!');
+        } else {
+          alert('Invalid CSV format. Please use the same format as exported CSV files.');
+        }
+      };
+
+      reader.readAsText(file);
     }
 
     // Initialize everything
